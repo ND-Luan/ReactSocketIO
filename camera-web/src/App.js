@@ -7,7 +7,7 @@ function App() {
     secure: true,
     reconnect: true,
     rejectUnauthorized: false,
-  });
+  }); //Put Your IP
 
   const [url, setUrl] = useState("");
   useEffect(() => {
