@@ -22,6 +22,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  gap: 20px;
 }
 
 .App-link {
@@ -35,4 +36,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+.buttonAccept {
+  width: 80px;
+  height: 50px;
+  background-color: rgb(41, 174, 41);
+  color: white;
+}
+.buttonCancel {
+  width: 80px;
+  height: 50px;
+  background-color: rgb(245, 136, 136);
+  color: white;
 }

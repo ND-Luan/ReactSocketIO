@@ -9,7 +9,7 @@ const StackNavigation = () => {
   return (
     <NavigationContainer
     >
-      <Stack.Navigator initialRouteName='InfoCamera'>
+      <Stack.Navigator initialRouteName='CameraApp'>
         <Stack.Screen name="CameraApp" component={CameraApp}></Stack.Screen>
         <Stack.Screen name="InfoCamera" component={InfoCamera}></Stack.Screen>
       </Stack.Navigator>

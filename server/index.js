@@ -16,14 +16,18 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  var clientIp = socket.conn.remoteAddress
+  var clientIp = socket.conn.remoteAddress;
   console.log(`User Connected: ${clientIp}`);
 
-  socket.on("send_message", (data) => {
-    //socket.emit("receive_message", data);
-    console.log(data);
+  socket.on("send_img", (data) => {
+    socket.broadcast.emit("recive_img", data);
   });
-  
+  socket.on("send_accpect", (data) => {
+    socket.broadcast.emit("recive_accpect", data);
+  });
+  socket.on("send_cancel", (data) => {
+    socket.broadcast.emit("recive_cancel", data);
+  });
 });
 
 server.listen(3001, () => {

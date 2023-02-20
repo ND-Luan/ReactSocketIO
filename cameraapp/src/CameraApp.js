@@ -7,7 +7,9 @@ import {
   CameraPermissionStatus,
   useFrameProcessor,
 } from 'react-native-vision-camera';
-
+import storage from '@react-native-firebase/storage';
+import socket from './Socket';
+import {NetworkInfo} from 'react-native-network-info';
 function CameraApp({navigation}) {
   const [hasPermission, setHasPermission] = useState(false);
   useEffect(() => {
@@ -34,7 +36,14 @@ function CameraApp({navigation}) {
     }
   };
 
-  console.log(cameraRef.current);
+  NetworkInfo.getIPV4Address().then(ipv4Address => {
+    console.log(ipv4Address);
+  });
+
+  const sendImg = url => {
+    socket.emit('send_img', {url: url});
+  };
+  //console.log(cameraRef.current);
   return device && hasPermission ? (
     <View style={{flex: 1}}>
       <Camera
@@ -55,8 +64,13 @@ function CameraApp({navigation}) {
         <TouchableOpacity
           onPress={async () => {
             var photo = await handleBarCodeScanned();
-            console.log(photo.path);
-            navigation.navigate('InfoCamera', {photo: photo.path});
+            const reference = storage().ref('img');
+
+            await reference.putFile(photo.path);
+
+            const url = await storage().ref('img').getDownloadURL();
+            sendImg(url);
+            navigation.navigate('InfoCamera', {url: url});
           }}
           style={{
             width: 100,
@@ -73,4 +87,5 @@ function CameraApp({navigation}) {
     </View>
   ) : null;
 }
+
 export default CameraApp;

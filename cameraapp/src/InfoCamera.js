@@ -1,17 +1,23 @@
-import {useRef} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import {View, TouchableOpacity, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {NetworkInfo} from 'react-native-network-info';
+import socket from './Socket';
 
-const InfoCamera = ({route, navigation}) => {
+const InfoCamera = ({ navigation}) => {
   //const photo = route.params.photo ;
   // console.log(photo);
-  const ipRef = useRef(null);
-  NetworkInfo.getIPV4Address().then(ipv4Address => {
-    ipRef.current = ipv4Address;
+  const [data, setData] = useState();
 
-  });
-
+  useEffect(() => {
+    socket.on('recive_accpect', data => {
+      setData(data);
+      console.log(data);
+    });
+    socket.on('recive_cancel', data => {
+      setData(data);
+      console.log(data);
+    });
+  }, [socket]);
   return (
     <View
       style={{
@@ -36,14 +42,14 @@ const InfoCamera = ({route, navigation}) => {
       </TouchableOpacity>
       <FastImage
         source={{
-          uri: 'file://',
+          uri: data == undefined ? null : data.data.url,
           headers: {Authorization: 'someAuthToken'},
           priority: FastImage.priority.normal,
         }}
         style={{width: 200, height: 200}}
         resizeMode={FastImage.resizeMode.cover}
       />
-      <Text>IP: {ipRef.current}</Text>
+      <Text>{data == undefined ? null : data.data.message}</Text>
     </View>
   );
 };
