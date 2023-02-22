@@ -22,7 +22,7 @@ function CameraApp({navigation}) {
 
   const devices = useCameraDevices('wide-angle-camera');
 
-  const device = devices.front;
+  const device = devices.back; // or front
 
   if (device == null) return <Text style={{color: 'white'}}>Loading</Text>;
 
